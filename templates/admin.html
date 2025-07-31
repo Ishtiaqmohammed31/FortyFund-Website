@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Edit Website Content</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin.css')}}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Basic styles for buttons - can be moved to admin.css */
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .btn-disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        /* Style for section dropdown */
+        .section-select {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+            color: #555;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        h3 {
+            font-size: 1.2em;
+            color: #666;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .navigation-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        input[type="file"] {
+            padding: 5px;
+        }
+        .current-file {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #777;
+        }
+        .current-file img {
+            max-width: 150px;
+            height: auto;
+            display: block;
+            margin-top: 10px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .flash-messages {
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .flash-messages .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash-messages .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Table styles for blog/FAQ/contact management */
+        .overflow-x-auto {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+        th {
+            background-color: #edf2f7;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+        tr:hover {
+            background-color: #edf2f7;
+        }
+        td img {
+            max-width: 80px;
+            max-height: 80px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+        .action-buttons a, .action-buttons button {
+            display: inline-block;
+            margin-right: 8px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease;
+        }
+        .action-buttons a.text-blue-500 {
+            background-color: #e0f2fe;
+            color: #2196f3;
+        }
+        .action-buttons a.text-blue-500:hover {
+            background-color: #c0e1fd;
+        }
+        .action-buttons button.text-red-500 {
+            background-color: #ffebee;
+            color: #f44336;
+            border: none; /* Remove default button border */
+            cursor: pointer;
+        }
+        .action-buttons button.text-red-500:hover {
+            background-color: #ffcccb;
+        }
+        /* Specific styles for FAQ items */
+        .faq-item {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background-color: #fdfdfd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .faq-item .submit-btn {
+            margin-top: 15px;
+            width: auto;
+            padding: 10px 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Panel - Edit Website Content</h1>
+
+        <div class="flash-messages" id="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <script>
+            // Make flash messages disappear after 4 seconds
+            setTimeout(function() {
+                var flash = document.getElementById('flash-messages');
+                if (flash) {
+                    flash.style.display = 'none';
+                }
+            }, 4000);
+            // Remove flash messages from history so they don't reappear on refresh
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+        </script>
+
+        <div class="navigation-panel">
+            <button id="prev-btn" class="btn-secondary">Previous</button>
+
+            <select id="section-dropdown" class="section-select">
+                <option value="0">Navigation</option>
+                <option value="1">Hero Section</option>
+                <option value="2">Client Trust</option>
+                <option value="3">Innovation</option>
+                <option value="4">Experience</option>
+                <option value="5">Statistics</option>
+                <option value="6">Get To Know</option>
+                <option value="7">Explore</option>
+                <option value="8">Footer</option>
+                <option value="9">Blog Management</option>
+                <option value="10">Faqs Management</option>
+                <option value="11">Contact Submissions</option>
+                <option value="12">Book Demo</option>
+            </select>
+
+            <button id="next-btn" class="btn-primary">Next</button>
+        </div>
+
+        {# Main Content Sections - these forms submit to the 'update_main_content' type in /admin #}
+        <form action="{{ url_for('admin') }}" method="POST" enctype="multipart/form-data" id="mainContentForm">
+            <input type="hidden" name="form_type" value="update_main_content">
+
+            <section id="navSection" class="hidden">
+               <h2>Navbar Section</h2>
+               <div class="form-group">
+                <label for="navLogo">Navigation Logo Image:</label>
+                <input type="file" id="navLogo" name="navLogo" accept="image/*">
+                {% if content.navLogo %}
+                    <p class="current-file">Current: <a href="{{ content.navLogo }}" target="_blank">{{ content.navLogo.split('/')[-1] if content.navLogo else '' }}</a>
+                    {% if content.navLogo.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                        <img src="{{ content.navLogo }}" alt="Current Nav Logo">
+                    {% endif %}
+                    </p>
+                    <input type="hidden" name="currentNavLogo" value="{{ content.navLogo }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="navAnchor1">Anchor 1 Text:</label>
+                <input type="text" id="navAnchor1" name="navAnchor1" value="{{ content.navAnchor1 }}">
+            </div>
+            <div class="form-group">
+                <label for="dropdown1">Dropdown 1 Text:</label>
+                <input type="text" id="dropdown1" name="dropdown1" value="{{ content.dropdown1 }}">
+            </div>
+            <div class="form-group">
+                <label for="dropdown2">Dropdown 2 Text:</label>
+                <input type="text" id="dropdown2" name="dropdown2" value="{{ content.dropdown2 }}">
+            </div>
+            <div class="form-group">
+                <label for="navAnchor2">Anchor 2 Text (FAQs):</label>
+                <input type="text" id="navAnchor2" name="navAnchor2" value="{{ content.navAnchor2 }}">
+            </div>
+            <div class="form-group">
+                <label for="navAnchor3">Anchor 3 Text (Connect):</label>
+                <input type="text" id="navAnchor3" name="navAnchor3" value="{{ content.navAnchor3 }}">
+            </div>
+            <div class="form-group">
+                <label for="navbtn">Navigation Button Text:</label>
+                <input type="text" id="navbtn" name="navbtn" value="{{ content.navbtn }}">
+            </div>
+                <button type="submit" class="submit-btn btn-primary w-full mt-auto">Update Content</button>
+            </section>
+
+            <section id="HeroSection" class="hidden">
+                <h2>Hero Section</h2>
+                <div class="form-group">
+                <label for="heroImg">Hero Image:</label>
+                <input type="file" id="heroImg" name="heroImg" accept="image/*">
+                {% if content.heroImg %}
+                    <p class="current-file">Current: <a href="{{ content.heroImg }}" target="_blank">{{ content.heroImg.split('/')[-1] if content.heroImg else '' }}</a>
+                    {% if content.heroImg.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                        <img src="{{ content.heroImg }}" alt="Current Hero Image">
+                    {% endif %}
+                    </p>
+                    <input type="hidden" name="currentHeroImg" value="{{ content.heroImg }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="heroHeading">Hero Heading:</label>
+                <input type="text" id="heroHeading" name="heroHeading" value="{{ content.heroHeading }}">
+            </div>
+            <div class="form-group">
+                <label for="heroDescription">Hero Paragraph:</label>
+                <textarea id="heroDescription" name="heroDescription">{{ content.heroDescription }}</textarea>
+            </div>
+                <button type="submit" class="submit-btn btn-primary w-full mt-auto">Update Content</button>
+            </section>
+
+            <section id="ClientTrust" class="hidden">
+                <h2>Client Trust Section</h2>
+                <div class="form-group">
+                <label for="clientHeading">Client Trust Heading:</label>
+                <input type="text" id="clientHeading" name="clientHeading" value="{{ content.clientHeading }}">
+            </div>
+            <div class="form-group">
+                <label for="clientDescription">Client Trust Description:</label>
+                <textarea id="clientDescription" name="clientDescription">{{ content.clientDescription }}</textarea>
+            </div>
+            {% for i in range(1, 10) %}
+            <div class="form-group">
+                <label for="clientImg{{ i }}">Client Logo {{ i }}:</label>
+                <input type="file" id="clientImg{{ i }}" name="clientImg{{ i }}" accept="image/*">
+                {% if content['clientImg' ~ i] %}
+                    <p class="current-file">Current: <a href="{{ content['clientImg' ~ i] }}" target="_blank">{{ content['clientImg' ~ i].split('/')[-1] if content['clientImg' ~ i] else '' }}</a>
+                    {% if content['clientImg' ~ i].lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                        <img src="{{ content['clientImg' ~ i] }}" alt="Current Client Logo {{ i }}">
+                    {% endif %}
+                    </p>
+                    <input type="hidden" name="currentClientImg{{ i }}" value="{{ content['clientImg' ~ i] }}">
+                {% endif %}
+            </div>
+            {% endfor %}
+                <button type="submit" class="submit-btn btn-primary w-full mt-auto">Update Content</button>
+            </section>
+
+            <section id="InnovationSection" class="hidden">
+                <h2>Innovation Section</h2>
+                <div class="form-group">
+                <label for="innovationHeadTop">Innovation Sub-heading:</label>
+                <input type="text" id="innovationHeadTop" name="innovationHeadTop" value="{{ content.innovationHeadTop }}">
+            </div>
+            <div class="form-group">
+                <label for="innovationHeadmain">Innovation Heading:</label>
+                <input type="text" id="innovationHeadmain" name="innovationHeadmain" value="{{ content.innovationHeadmain }}">
+            </div>
+            <div class="form-group">
+                <label for="innovationDescription">Innovation Paragraph:</label>
+                <textarea id="innovationDescription" name="innovationDescription">{{ content.innovationDescription }}</textarea>
+            </div>
+            {% for i in range(1, 5) %}
+            <div class="form-group">
+                <label for="li{{ i }}">Innovation List Item {{ i }}:</label>
+                <input type="text" id="li{{ i }}" name="li{{ i }}" value="{{ content['li' ~ i] }}">
+            </div>
+            {% endfor %}
+            <div class="form-group">
+                <label for="innovationVideo">Innovation Video:</label>
+                <input type="file" id="innovationVideo" name="innovationVideo" accept="video/mp4,video/webm">
+                {% if content.innovationVideo %}
+                    <p class="current-file">Current: <a href="{{ content.innovationVideo }}" target="_blank">{{ content.innovationVideo.split('/')[-1] if content.innovationVideo else '' }}</a></p>
+                    <input type="hidden" name="currentInnovationVideo" value="{{ content.innovationVideo }}">
+                {% endif %}
+            </div>
+                <button type="submit" class="submit-btn btn-primary w-full mt-auto">Update Content</button>
+            </section>
+
+            <section id="ExperienceSection" class="hidden">
+                <h2>Improve Experience Section</h2>
+                <div class="form-group">
+                <label for="clientExpHead">Experience Heading:</label>
+                <input type="text" id="clientExpHead" name="clientExpHead" value="{{ content.clientExpHead }}">
+            </div>
+            <div class="form-group">
+                <label for="clientExpDescription">Experience Paragraph:</label>
+                <textarea id="clientExpDescription" name="clientExpDescription">{{ content.clientExpDescription }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="clientExpVideo">Experience Video:</label>
+                <input type="file" id="clientExpVideo" name="clientExpVideo" accept="video/mp4,video/webm">
+                {% if content.clientExpVideo %}
+                    <p class="current-file">Current: <a href="{{ content.clientExpVideo }}" target="_blank">{{ content.clientExpVideo.split('/')[-1] if content.clientExpVideo else '' }}</a></p>
+                    <input type="hidden" name="currentClientExpVideo" value="{{ content.clientExpVideo }}">
+                {% endif %}
+            </div>
+                <button type="submit" class="submit-btn btn-primary w-full mt-auto">Update Content</button>
+            </section>
+
+            <section id="StatisticSection" class="hidden">
+                <h2>By the Numbers Section (Statistics)</h2>
+                <div class="form-group">
+                <label for="statHead">Statistics Heading:</label>
+                <input type="text" id="statHead" name="statHead" value="{{ content.statHead }}">
+            </div>
+            <div class="form-group">
+                <label for="statDescription">Statistics Paragraph:</label>
+                <textarea id="statDescription" name="statDescription">{{ content.statDescription }}</textarea>
+            </div>
+
+            <h3>Statistic Card 1</h3>
+            <div class="form-group">
+                <label for="StatcardLogo1">Card 1 Logo:</label>
+                <input type="file" id="StatcardLogo1" name="StatcardLogo1" accept="image/*">
+                {% if content.StatcardLogo1 %}
+                    <p class="current-file">Current: <a href="{{ content.StatcardLogo1 }}" target="_blank">{{ content.StatcardLogo1.split('/')[-1] if content.StatcardLogo1 else '' }}</a>
+                    {% if content.StatcardLogo1.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                        <img src="{{ content.StatcardLogo1 }}" alt="Current Card 1 Logo">
+                    {% endif %}
+                    </p>
+                    <input type="hidden" name="currentStatcardLogo1" value="{{ content.StatcardLogo1 }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="StatcardHead1">Card 1 Heading:</label>
+                <input type="text" id="StatcardHead1" name="StatcardHead1" value="{{ content.StatcardHead1 }}">
+            </div>
+            <div class="form-group">
+                <label for="StatcardPara1">Card 1 Paragraph:</label>
+                <textarea id="StatcardPara1" name="StatcardPara1">{{ content.StatcardPara1 }}</textarea>
+            </div>
+
+            <h3>Statistic Card 2</h3>
+            <div class="form-group">
+                <label for="StatcardLogo2">Card 2 Logo:</label>
+                <input type="file" id="StatcardLogo2" name="StatcardLogo2" accept="image/*">
+                {% if content.StatcardLogo2 %}
+                    <p class="current-file">Current: <a href="{{ content.StatcardLogo2 }}" target="_blank">{{ content.StatcardLogo2.split('/')[-1] if content.StatcardLogo2 else '' }}</a>
+                    {% if content.StatcardLogo2.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                        <img src="{{ content.StatcardLogo2 }}" alt="Current Card 2 Logo">
+                    {% endif %}
+                    </p>
+                    <input type="hidden" name="currentStatcardLogo2" value="{{ content.StatcardLogo2 }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="StatcardHead2">Card 2 Heading:</label>
+                <input type="text" id="StatcardHead2" name="StatcardHead2" value="{{ content.StatcardHead2 }}">
+            </div>
+            <div class="form-group">
+                <label for="StatcardPara2">Card 2 Paragraph:</label>
+                <textarea id="StatcardPara2" name="StatcardPara2">{{ content.StatcardPara2 }}</textarea>
+            </div>
+
+            <h3>Statistic Card 3</h3>
+            <div class="form-group">
+                <label for="StatcardLogo3">Card 3 Logo:</label>
+                <input type="file" id="StatcardLogo3" name="StatcardLogo3" accept="image/*">
+                {% if content.StatcardLogo3 %}
+                    <p class="current-file">Current: <a href="{{ content.StatcardLogo3 }}" target="_blank">{{ content.StatcardLogo3.split('/')[-1] if content.StatcardLogo3 else '' }}</a>
+                    {% if content.StatcardLogo3.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                        <img src="{{ content.StatcardLogo3 }}" alt="Current Card 3 Logo">
+                    {% endif %}
+                    </p>
+                    <input type="hidden" name="currentStatcardLogo3" value="{{ content.StatcardLogo3 }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="StatcardHead3">Card 3 Heading:</label>
+                <input type="text" id="StatcardHead3" name="StatcardHead3" value="{{ content.StatcardHead3 }}">
+            </div>
+            <div class="form-group">
+                <label for="StatcardPara3">Card 3 Paragraph:</label>
+                <textarea id="StatcardPara3" name="StatcardPara3">{{ content.StatcardPara3 }}</textarea>
+            </div>
+                <button type="submit" class="submit-btn btn-primary w-full mt-auto">Update Content</button>
+            </section>
+
+            <section id="GetToKnowSection" class="hidden">
+                <h2>Get to Know Fortifund Section</h2>
+                <div class="form-group">
+                <label for="knowVideo">Get to Know Video:</label>
+                <input type="file" id="knowVideo" name="knowVideo" accept="video/mp4,video/webm">
+                {% if content.knowVideo %}
+                    <p class="current-file">Current: <a href="{{ content.knowVideo }}" target="_blank">{{ content.knowVideo.split('/')[-1] if content.knowVideo else '' }}</a></p>
+                    <input type="hidden" name="currentKnowVideo" value="{{ content.knowVideo }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="knowHead">Get to Know Heading:</label>
+                <input type="text" id="knowHead" name="knowHead" value="{{ content.knowHead }}">
+            </div>
+            <button type="submit" class="submit-btn btn-primary w-full mt-auto">Update Content</button>
+            </section>
+
+            <section id="ExploreSection" class="hidden">
+                <h2>Explore Industries and Services Section</h2>
+                <div class="form-group">
+                <label for="exploreHeading">Explore Heading:</label>
+                <input type="text" id="exploreHeading" name="exploreHeading" value="{{ content.exploreHeading }}">
+            </div>
+            <button type="submit" class="submit-btn btn-primary w-full mt-auto">Update Content</button>
+            </section>
+
+            <section id="FooterSection" class="hidden">
+                <h2>Footer Section</h2>
+                <div class="form-group">
+                <label for="footer_logo">Footer Logo Text (or reference, if text field):</label>
+                <input type="text" id="footer_logo" name="footer_logo" value="{{ content.footer_logo }}">
+                </div>
+
+            <h3>Social Link 1</h3>
+            <div class="form-group">
+                <label for="footer_social_icon1">Social Icon 1:</label>
+                <input type="file" id="footer_social_icon1" name="footer_social_icon1" accept="image/*">
+                {% if content.footer_social_icon1 %}
+                    <p class="current-file">Current: <a href="{{ content.footer_social_icon1 }}" target="_blank">{{ content.footer_social_icon1.split('/')[-1] if content.footer_social_icon1 else '' }}</a>
+                    {% if content.footer_social_icon1.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                        <img src="{{ content.footer_social_icon1 }}" alt="Current Social Image 1">
+                    {% endif %}
+                    </p>
+                    <input type="hidden" name="current_footer_social_icon1" value="{{ content.footer_social_icon1 }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="footer_social_link1">Social Link 1 URL:</label>
+                <input type="text" id="footer_social_link1" name="footer_social_link1" value="{{ content.footer_social_link1 }}">
+            </div>
+
+            <h3>Social Link 2</h3>
+            <div class="form-group">
+                <label for="footer_social_icon2">Social Icon 2:</label>
+                <input type="file" id="footer_social_icon2" name="footer_social_icon2" accept="image/*">
+                {% if content.footer_social_icon2 %}
+                    <p class="current-file">Current: <a href="{{ content.footer_social_icon2 }}" target="_blank">{{ content.footer_social_icon2.split('/')[-1] if content.footer_social_icon2 else '' }}</a>
+                    {% if content.footer_social_icon2.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                        <img src="{{ content.footer_social_icon2 }}" alt="Current Social Image 2">
+                    {% endif %}
+                    </p>
+                    <input type="hidden" name="current_footer_social_icon2" value="{{ content.footer_social_icon2 }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="footer_social_link2">Social Link 2 URL:</label>
+                <input type="text" id="footer_social_link2" name="footer_social_link2" value="{{ content.footer_social_link2 }}">
+            </div>
+
+            <h3>Social Link 3</h3>
+            <div class="form-group">
+                <label for="footer_social_icon3">Social Icon 3:</label>
+                <input type="file" id="footer_social_icon3" name="footer_social_icon3" accept="image/*">
+                {% if content.footer_social_icon3 %}
+                    <p class="current-file">Current: <a href="{{ content.footer_social_icon3 }}" target="_blank">{{ content.footer_social_icon3.split('/')[-1] if content.footer_social_icon3 else '' }}</a>
+                    {% if content.footer_social_icon3.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                        <img src="{{ content.footer_social_icon3 }}" alt="Current Social Image 3">
+                    {% endif %}
+                    </p>
+                    <input type="hidden" name="current_footer_social_icon3" value="{{ content.footer_social_icon3 }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="footer_social_link3">Social Link 3 URL:</label>
+                <input type="text" id="footer_social_link3" name="footer_social_link3" value="{{ content.footer_social_link3 }}" >
+            </div>
+
+            <h3>Social Link 4</h3>
+            <div class="form-group">
+                <label for="footer_social_icon4">Social Icon 4:</label>
+                <input type="file" id="footer_social_icon4" name="footer_social_icon4" accept="image/*">
+                {% if content.footer_social_icon4 %}
+                    <p class="current-file">Current: <a href="{{ content.footer_social_icon4 }}" target="_blank">{{ content.footer_social_icon4.split('/')[-1] if content.footer_social_icon4 else '' }}</a>
+                    {% if content.footer_social_icon4.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp')) %}
+                        <img src="{{ content.footer_social_icon4 }}" alt="Current Social Image 4">
+                    {% endif %}
+                    </p>
+                    <input type="hidden" name="current_footer_social_icon4" value="{{ content.footer_social_icon4 }}">
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="footer_social_link4">Social Link 4 URL:</label>
+                <input type="text" id="footer_social_link4" name="footer_social_link4" value="{{ content.footer_social_link4 }}">
+            </div>
+
+            <button type="submit" class="submit-btn btn-primary w-full mt-auto">Update Content</button>
+        </form>
+        </section>
+
+        {# NEW SECTION FOR BLOG MANAGEMENT #}
+        <section id="BlogManagementSection" class="hidden">
+            <h2>Blog Management</h2>
+            {# Button to navigate to the separate blog creation form #}
+            <a href="{{ url_for('create_blog_form') }}" class="submit-btn btn-primary w-full mt-auto mb-4 text-center block" style="max-width: 300px; margin: 20px auto;">Create New Blog Post</a>
+
+            <h3 class="mt-8">Existing Blog Posts</h3>
+            {% if content.all_blogs %}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                        <thead>
+                            <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+                                <th class="py-3 px-6 border-b border-gray-200">ID</th>
+                                <th class="py-3 px-6 border-b border-gray-200">Thumbnail</th>
+                                <th class="py-3 px-6 border-b border-gray-200">Heading</th>
+                                <th class="py-3 px-6 border-b border-gray-200">Author</th>
+                                <th class="py-3 px-6 border-b border-gray-200">Publish Date</th>
+                                <th class="py-3 px-6 border-b border-gray-200">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700 text-sm">
+                            {% for blog in content.all_blogs %}
+                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                <td class="py-3 px-6">{{ blog.blog_id }}</td>
+                                <td class="py-3 px-6">
+                                    {% if blog.thumbnail_image_filename %}
+                                        <img src="{{ url_for('static', filename='assets/uploads/' + blog.thumbnail_image_filename) }}" alt="Thumbnail" class="w-16 h-16 object-cover rounded">
+                                    {% else %}
+                                        No Image
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 px-6">{{ blog.heading }}</td>
+                                <td class="py-3 px-6">{{ blog.author }}</td>
+                                <td class="py-3 px-6">{{ blog.publish_date.strftime('%Y-%m-%d') }}</td>
+                                <td class="py-3 px-6 action-buttons">
+                                    <a href="{{ url_for('edit_blog_form', blog_id=blog.blog_id) }}" class="text-blue-500 hover:text-blue-700 mr-2">Edit</a>
+                                    <form action="{{ url_for('delete_blog', blog_id=blog.blog_id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this blog post?');">
+                                        <button type="submit" class="text-red-500 hover:text-red-700 bg-transparent border-none p-0 cursor-pointer">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No blog posts found.</p>
+            {% endif %}
+        </section>
+
+    </div> {# End of .container #}
+
+    <section id="faq-management-section" class="hidden" style="margin-top: 50px;">
+    <div class="container"> {# Wrap FAQ section in its own container for consistent styling #}
+    <h2>FAQ Management</h2>
+
+    <h3>Add New FAQ</h3>
+    <form action="{{ url_for('admin') }}" method="POST" class="form-group">
+        <input type="hidden" name="form_type" value="add_faq">
+        <label for="faqCategory">Category:</label>
+        <input type="text" id="faqCategory" name="faqCategory" required>
+
+        <label for="faqQuestion">Question:</label>
+        <textarea id="faqQuestion" name="faqQuestion" rows="3" required></textarea>
+
+        <label for="faqAnswer">Answer:</label>
+        <textarea id="faqAnswer" name="faqAnswer" rows="6" required></textarea>
+
+        <button type="submit" class="submit-btn">Add FAQ</button>
+    </form>
+
+    <h3 style="margin-top: 40px;">Existing FAQs</h3>
+    {% if content.all_faqs %}
+        {% for faq in content.all_faqs %}
+        <div class="faq-item">
+            <form action="{{ url_for('admin') }}" method="POST">
+                <input type="hidden" name="form_type" value="edit_faq">
+                <input type="hidden" name="faq_id" value="{{ faq.faq_id }}">
+
+                <div class="form-group">
+                    <label for="editFaqCategory_{{ faq.faq_id }}">Category:</label>
+                    <input type="text" id="editFaqCategory_{{ faq.faq_id }}" name="faqCategory" value="{{ faq.category }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editFaqQuestion_{{ faq.faq_id }}">Question:</label>
+                    <textarea id="editFaqQuestion_{{ faq.faq_id }}" name="faqQuestion" rows="3" required>{{ faq.question }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editFaqAnswer_{{ faq.faq_id }}">Answer:</label>
+                    <textarea id="editFaqAnswer_{{ faq.faq_id }}" name="faqAnswer" rows="6" required>{{ faq.answer }}</textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" style="background-color: #28a745;">Save Changes</button>
+            </form>
+            <form action="{{ url_for('delete_faq', faq_id=faq.faq_id) }}" method="POST" style="display: inline-block; margin-left: 10px;">
+                <button type="submit" class="submit-btn" style="background-color: #dc3545;" onclick="return confirm('Are you sure you want to delete this FAQ?');">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No FAQs added yet.</p>
+    {% endif %}
+    </div> {# End of FAQ container #}
+</section>
+
+
+    {# NEW SECTION FOR CONTACT SUBMISSIONS #}
+    <section id="ContactSubmissionsSection" class="hidden" style="margin-top: 50px;">
+        <div class="container"> {# Wrap Contact Submissions section in its own container #}
+        <h2>Contact Submissions</h2>
+        {% if content.contact_submissions %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                    <thead>
+                        <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+                            <th class="py-3 px-6 border-b border-gray-200">ID</th>
+                            <th class="py-3 px-6 border-b border-gray-200">Name</th>
+                            <th class="py-3 px-6 border-b border-gray-200">Email</th>
+                            <th class="py-3 px-6 border-b border-gray-200">Job Title</th>
+                            <th class="py-3 px-6 border-b border-gray-200">Company</th>
+                            <th class="py-3 px-6 border-b border-gray-200">Phone</th>
+                            <th class="py-3 px-6 border-b border-gray-200">Industry</th>
+                            <th class="py-3 px-6 border-b border-gray-200">Employees</th>
+                            <th class="py-3 px-6 border-b border-gray-200">Details</th>
+                            <th class="py-3 px-6 border-b border-gray-200">Submission Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 text-sm">
+                        {% for submission in content.contact_submissions %}
+                        <tr class="border-b border-gray-200 hover:bg-gray-50">
+                            <td class="py-3 px-6">{{ submission.id }}</td>
+                            <td class="py-3 px-6">{{ submission.first_name }} {{ submission.last_name }}</td>
+                            <td class="py-3 px-6">{{ submission.email }}</td>
+                            <td class="py-3 px-6">{{ submission.job_title }}</td>
+                            <td class="py-3 px-6">{{ submission.company_name }}</td>
+                            <td class="py-3 px-6">{{ submission.phone_number }}</td>
+                            <td class="py-3 px-6">{{ submission.industry }}</td>
+                            <td class="py-3 px-6">{{ submission.num_employees }}</td>
+                            <td class="py-3 px-6">{{ submission.additional_details }}</td>
+                            <td class="py-3 px-6">{{ submission.submission_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>No contact submissions found.</p>
+        {% endif %}
+        </div> {# End of Contact Submissions container #}
+    </section>
+
+    <section id="DemoBookingsSection" class="hidden">
+        <h2>Demo Bookings</h2>
+        {% if content.all_demo_bookings %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <thead>
+                    <tr class="bg-gray-100 text-left text-gray-600 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 border-b border-gray-200">ID</th>
+                        <th class="py-3 px-6 border-b border-gray-200">Firm Name</th>
+                        <th class="py-3 px-6 border-b border-gray-200">Person</th>
+                        <th class="py-3 px-6 border-b border-gray-200">Email</th>
+                        <th class="py-3 px-6 border-b border-gray-200">Date</th>
+                        <th class="py-3 px-6 border-b border-gray-200">Time</th>
+                        <th class="py-3 px-6 border-b border-gray-200">Meeting Link</th>
+                        <th class="py-3 px-6 border-b border-gray-200">Created</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm">
+                    {% for booking in content.all_demo_bookings %}
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
+                        <td class="py-3 px-6">{{ booking.id }}</td>
+                        <td class="py-3 px-6">{{ booking.firm_name }}</td>
+                        <td class="py-3 px-6">{{ booking.person_name }}</td>
+                        <td class="py-3 px-6">{{ booking.email }}</td>
+                        <td class="py-3 px-6">{{ booking.meeting_date.strftime('%Y-%m-%d') if booking.meeting_date else '' }}</td>
+                        <td class="py-3 px-6">{{ booking.meeting_time }}</td>
+                        <td class="py-3 px-6"><a href="{{ booking.meeting_link }}" target="_blank">Link</a></td>
+                        <td class="py-3 px-6">{{ booking.created_at.strftime('%Y-%m-%d %H:%M:%S') if booking.created_at else '' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <p>No demo bookings found.</p>
+        {% endif %}
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = [
+                document.getElementById('navSection'),
+                document.getElementById('HeroSection'),
+                document.getElementById('ClientTrust'),
+                document.getElementById('InnovationSection'),
+                document.getElementById('ExperienceSection'),
+                document.getElementById('StatisticSection'),
+                document.getElementById('GetToKnowSection'),
+                document.getElementById('ExploreSection'),
+                document.getElementById('FooterSection'),
+                document.getElementById('BlogManagementSection'),
+                document.getElementById('faq-management-section'),
+                document.getElementById('ContactSubmissionsSection'),
+                document.getElementById('DemoBookingsSection')
+            ];
+
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const sectionDropdown = document.getElementById('section-dropdown');
+
+            let currentSectionIndex = 0;
+
+            const showSection = (index) => {
+                sections.forEach((section, i) => {
+                    if (section) {
+                        if (i === index) {
+                            section.classList.remove('hidden');
+                            // Find submit button within this specific active section's form
+                            // This ensures only the relevant submit button for content updates is shown
+                            const formSubmitBtn = section.querySelector('form .submit-btn');
+                            if (formSubmitBtn) {
+                                formSubmitBtn.classList.remove('hidden');
+                            }
+                            // Special case for Blog Management section, where the "Create New Blog Post" button is separate
+                            if (section.id === 'BlogManagementSection') {
+                                const createBlogBtn = section.querySelector('a.submit-btn.block');
+                                if (createBlogBtn) {
+                                    createBlogBtn.classList.remove('hidden');
+                                }
+                            }
+                        } else {
+                            section.classList.add('hidden');
+                            // When hiding a section, hide its submit button too
+                            const formSubmitBtn = section.querySelector('form .submit-btn');
+                            if (formSubmitBtn) {
+                                formSubmitBtn.classList.add('hidden');
+                            }
+                             // Special case for Blog Management section
+                             if (section.id === 'BlogManagementSection') {
+                                const createBlogBtn = section.querySelector('a.submit-btn.block');
+                                if (createBlogBtn) {
+                                    createBlogBtn.classList.add('hidden');
+                                }
+                            }
+                        }
+                    }
+                });
+
+                if (sectionDropdown) {
+                    sectionDropdown.value = index;
+                }
+
+                if (prevBtn) {
+                    prevBtn.disabled = index === 0;
+                    prevBtn.classList.toggle('btn-disabled', index === 0);
+                }
+
+                if (nextBtn) {
+                    nextBtn.disabled = index === sections.length - 1;
+                    nextBtn.classList.toggle('btn-disabled', index === sections.length - 1);
+                }
+            };
+
+            nextBtn.addEventListener('click', () => {
+                if (currentSectionIndex < sections.length - 1) {
+                    currentSectionIndex++;
+                    showSection(currentSectionIndex);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentSectionIndex > 0) {
+                    currentSectionIndex--;
+                    showSection(currentSectionIndex);
+                }
+            });
+
+            sectionDropdown.addEventListener('change', (event) => {
+                currentSectionIndex = parseInt(event.target.value);
+                showSection(currentSectionIndex);
+            });
+
+            showSection(currentSectionIndex);
+        });
+    </script>
+</body>
+</html>

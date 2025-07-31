@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Home Page - Your Company Name{% endblock %}
+
+{% block content %}
+
+    <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12 max-w-3xl w-full text-gray-800 upcomming" style="margin-top:10%;">
+        <!-- Main Heading -->
+        <h1 class="text-4xl md:text-5xl font-extrabold text-pink-600 mb-4 text-center">
+            Matchmaking <span class="text-black-500">(Live Now) </span>
+        </h1>
+
+        <!-- Tagline -->
+        <p class="text-xl md:text-2xl font-semibold text-gray-700 mb-8 text-center">
+            Instant deal-to-lender matchmaking, built for brokers. 
+        </p>
+
+        <!-- Core Description -->
+        <p class="text-base md:text-lg leading-relaxed text-gray-600 mb-10 text-center">
+            FortiFund’s core matchmaking engine helps brokers instantly connect their deals with the most relevant lenders — 
+        </p>
+
+        <!-- Features Section -->
+        <div class="space-y-6">
+            <ul class="list-none p-0 space-y-4">
+                <!-- AI + OCR File Scanning -->
+                <li class="flex items-start bg-gray-50 p-4 rounded-xl shadow-sm">
+                    <span class="text-2xl mr-4 flex-shrink-0">🤖</span>
+                    <p class="text-lg text-gray-700">
+                        <strong class="font-semibold">Precision Matching:</strong>Based on guidelines, commissions, and your preferred lenders
+                    </p>
+                </li>
+
+                <!-- Drag-and-Drop Uploads with Auto-Sorting -->
+                <li class="flex items-start bg-gray-50 p-4 rounded-xl shadow-sm">
+                    <span class="text-2xl mr-4 flex-shrink-0">📤</span>
+                    <p class="text-lg text-gray-700">
+                        <strong class="font-semibold">Manual Deal Sending:</strong> You send the deal after matching — with full control
+                    </p>
+                </li>
+
+                <!-- One-Click Deal Delivery + Status Tracking -->
+                <li class="flex items-start bg-gray-50 p-4 rounded-xl shadow-sm">
+                    <span class="text-2xl mr-4 flex-shrink-0">🚀</span>
+                    <p class="text-lg text-gray-700">
+                        <strong class="font-semibold">Automatic Deal Storage:</strong> Every submitted deal is saved in your dashboard, so you can easily track, revisit, and manage past submissions
+                    </p>
+                </li>
+
+                <!-- In-App Chat with Matched Lenders -->
+                <li class="flex items-start bg-gray-50 p-4 rounded-xl shadow-sm">
+                    <span class="text-2xl mr-4 flex-shrink-0">💬</span>
+                    <p class="text-lg text-gray-700">
+                        <strong class="font-semibold">Organized File Uploads:</strong> Deal docs are uploaded and stored per file — no clutter, no confusion 
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

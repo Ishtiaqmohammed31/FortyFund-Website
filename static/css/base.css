@@ -1,0 +1,830 @@
+* {
+    font-family: "Lato", sans-serif;
+}
+
+button, a {
+    cursor: pointer;
+}
+
+p {
+    cursor: auto;
+}
+
+/* Navbar Styles */
+.navbar {
+    width: 97%;
+    background: rgb(33, 51, 55);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 15px;
+    height: 12vh;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 3;
+    transition: top 0.3s ease-in-out, opacity 0.3s;
+    padding: 0 20px;
+}
+
+.navbar.hidden {
+    top: -100px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: large;
+    z-index: 5;
+}
+
+.navbar .logo img {
+    width: 150px;
+    height: 40px;
+}
+
+.navbar .logo a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.navbar .list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.list ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.list ul li {
+    font-size: 1.2rem;
+    font-weight: 500;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.list ul a, .list ul p {
+    color: rgba(255, 255, 255, 0.7);
+    transition: 0.4s;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 10px 0;
+}
+
+.list ul a:hover,
+.list ul p:hover {
+    color: #fff;
+}
+
+.navbar .side {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.demoAnchor {
+    text-decoration: none;
+}
+
+.navbar .side button {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255, 255, 255, 0.7);
+    transition: 0.5s;
+    font-size: medium;
+    font-weight: 500;
+}
+
+.navbar .side button:hover {
+    background: rgb(240, 40, 184);
+    color: white;
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.dropdown p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    padding: 10px 0;
+}
+
+.dropdown-content {
+    position: absolute;
+    background-color: rgb(33, 51, 55);
+    min-width: 300px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+    z-index: 1;
+    border-radius: 10px;
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+    top: 100%;
+    left: 0;
+}
+
+.dropdown-content a {
+    color: rgba(255, 255, 255, 0.7);
+    padding: 12px 0;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.dropdown-content a:hover {
+    color: #fff;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 10px 0;
+}
+
+/* Burger Menu Styles */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 5;
+}
+
+.burger-menu div {
+    width: 100%;
+    height: 3px;
+    background: white;
+    border-radius: 5px;
+    transition: all 0.3s linear;
+    transform-origin: 1px;
+}
+
+.burger-menu.open div:nth-child(1) {
+    transform: rotate(45deg);
+}
+
+.burger-menu.open div:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.burger-menu.open div:nth-child(3) {
+    transform: rotate(-45deg);
+}
+
+
+/* contact page */
+
+.Contact{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 4;
+    display: none; /* Hidden by default, will be shown via JS */
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.5);
+}
+
+.Contact-conatiner{
+    width: 50%;
+    height: 98%;
+    background: #fff;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    align-items: center;
+    overflow-y: auto; /* Enable scrolling for smaller screens */
+}
+
+.contactCont{
+    width: 80%;
+}
+.closeBtnCont{
+    height: 5%;
+    display: flex;
+    align-items:self-end;
+}
+.closeBtnCont button{
+    width: 40px; /* Adjusted size */
+    height: 40px; /* Adjusted size */
+    border-radius: 50%;
+    font-size: x-large;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto; /* Push to the right */
+    color: #fff;
+    border: none;
+    background: rgb(240, 40, 184);
+    cursor: pointer;
+    margin-right: -10px; /* Adjust to align with container edge */
+    margin-top: -10px; /* Adjust to align with container edge */
+}
+
+.headers{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    text-align: center;
+    padding: 10px 0;
+}
+.mainHeading h1{
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+.contact-description{
+    font-size: 0.9rem;
+    color: #666;
+    max-width: 80%;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Increased gap for better spacing */
+    width: 80%;
+    padding-bottom: 20px; /* Add padding at the bottom of the form */
+}
+.sec-cont{
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Gap between sub-containers */
+}
+.infoSection{
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    justify-content: space-between;
+    gap: 10px;
+}
+.form-sub-cont{
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    justify-content: space-between;
+    width: 100%; /* Take full width in parent */
+    gap: 10px; /* Gap between form-final-cont items */
+}
+
+.form-final-cont{
+    display: flex;
+    flex-direction: column;
+    width: 48%; /* Adjust width for two columns */
+    height: auto;
+}
+.form-final-cont label{
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+.form-final-cont input, select{
+    height: 45px; /* Slightly increased height */
+    width: 100%; /* Take full width of its container */
+    background: rgb(240, 240, 240); /* Lighter background */
+    border-radius: 8px; /* Slightly less rounded */
+    border: 1px solid #ddd; /* Subtle border */
+    outline: none;
+    padding: 0 10px; /* Add padding inside input */
+    color: #333;
+    font-size: 1rem;
+}
+.form-final-cont select {
+    appearance: none; /* Remove default select arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+    padding-right: 30px; /* Make space for the custom arrow */
+}
+
+
+.additionalDetails{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.additionalDetails label{
+    font-size: 0.9rem;
+    color: #333;
+}
+.additionalDetails  textarea{
+    background: rgb(240, 240, 240);
+    height: 100px; /* Increased height for textarea */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    resize: vertical; /* Allow vertical resizing */
+    font-size: 1rem;
+    color: #333;
+}
+
+.Submit{
+    height: 45px; /* Increased height for button */
+    width: 40%; /* Adjusted width */
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    background: rgb(240, 40, 184);
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    align-self: center; /* Center the button */
+    margin-top: 15px; /* Add some margin top */
+}
+.Submit:hover{
+    background: rgb(190, 30, 140);
+    transform: translateY(-2px);
+}
+.Submit:active{
+    transform: translateY(0);
+}
+
+
+/* Responsive adjustments for Contact Form */
+@media (max-width: 1024px) {
+    .Contact-conatiner {
+        width: 70%; /* Wider on tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .Contact-conatiner {
+        width: 90%; /* Even wider on smaller tablets/large phones */
+        height: 90%; /* Adjust height */
+        padding: 15px;
+    }
+    .contactCont {
+        width: 95%; /* Adjust inner container width */
+    }
+    .closeBtnCont button {
+        margin-right: 0; /* Align closer to the edge */
+        margin-top: 0;
+    }
+    .mainHeading h1 {
+        font-size: 1.8rem;
+    }
+    .contact-description {
+        font-size: 0.85rem;
+        max-width: 95%;
+    }
+    .form-final-cont {
+        width: 100%; /* Stack inputs vertically on smaller screens */
+    }
+    .form-sub-cont {
+        flex-direction: column; /* Stack sub-containers vertically */
+        gap: 15px;
+    }
+    .Submit {
+        width: 60%; /* Make button wider on mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .Contact-conatiner {
+        width: 95%; /* Full width on very small phones */
+        height: 95%;
+        padding: 10px;
+    }
+    .closeBtnCont button {
+        width: 35px;
+        height: 35px;
+        font-size: x-large;
+    }
+    .mainHeading h1 {
+        font-size: 1.5rem;
+    }
+    .contact-description {
+        font-size: 0.8rem;
+    }
+    .form-final-cont input, select, .additionalDetails textarea {
+        height: 40px; /* Slightly smaller inputs on very small screens */
+        font-size: 0.9rem;
+    }
+    .Submit {
+        width: 80%; /* Even wider button */
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+
+
+/* footer */
+footer{
+    /* border:  solid #fff; */
+    display: flex;
+    flex-direction: column;
+    height: 60vh;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.ftr-cont{
+    /* border: solid #fff; */
+    width: 90%;
+    background: rgb(33, 51, 55);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 80%;
+    align-items: center;
+    width: 90%;
+
+}
+
+.ftr-elem{
+    /* border: solid #fff; */
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.footer-up{
+    height: 60%;
+    padding: 20px;
+    width: 90%;
+}
+.up-elem{
+    display: flex;
+    width: 50%;
+    height: 100%;
+}
+
+.ftr-lft{
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.ftr-lft p,
+.ftr-lft a{
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.ftr-rt p,
+.ftr-lft a{
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.ftr-lft,
+.ftr-rt a:hover{
+    color: rgb(255, 255, 255);
+}
+
+.lft-links{
+    /* border:  solid #fff; */
+    display: flex;
+    justify-content: space-between;
+    width: 25%;
+}
+
+.ftr-rt{
+    /* border:  solid #fff; */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.ftr-rt-links{
+    display: flex;
+    height: 40%;
+    flex-direction:  column;
+    justify-content: space-between;
+}
+
+
+.footer-down{
+    flex-direction:  column;
+    height: 25%;
+    width: 90%;
+    border-top: solid #b3b1b1;
+}
+
+.footer-down p, a{
+    color: rgba(255, 255, 255, 0.7);
+}
+.footer-down .term-policy p{
+    cursor:auto;
+}
+.lft-links a img {
+    height: 30px;
+    width: 30px;
+    border: none;
+}
+.ftr-lft-logo img {
+    height: auto; /* Or set a specific height if you need to */
+    width: 150px; /* Adjust as needed */
+    border: none; /* Remove border if not desired */
+}
+
+.ftr-rt-links a{
+    color: #b3b1b1;
+}
+
+/* back to top
+ */
+.backtotop {
+    position: fixed; /* Fixes the button relative to the viewport */
+    bottom: 20px;    /* 20px from the bottom */
+    right: 20px;     /* 20px from the right */
+    z-index: 1000;   /* Ensures it's above other content */
+    display: none;   /* Hidden by default */
+}
+
+#Totop {
+    background-color: #007bff; /* Blue background */
+    color: white;              /* White text */
+    border: none;              /* No border */
+    padding: 15px 20px;        /* Padding inside the button */
+    border-radius: 5px;        /* Slightly rounded corners */
+    cursor: pointer;           /* Hand cursor on hover */
+    font-size: 1.2em;          /* Larger font size */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+#Totop:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+#Totop:active {
+    transform: translateY(0); /* Resets on click */
+}
+
+@media (max-width: 980px) {
+    .navbar {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        height: auto;
+        min-height: 10vh;
+        border-radius: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding: 0;
+        background: rgb(33, 51, 55);
+    }
+
+    /* Top row with logo and burger */
+    .navbar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 15px 20px;
+        height: 10vh;
+    }
+
+    .navbar .logo {
+        justify-content: flex-start;
+        padding: 0;
+    }
+
+    .burger-menu {
+        display: flex;
+    }
+
+    /* Mobile menu container */
+    .navbar .list {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: rgb(33, 51, 55);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar .list.active {
+        display: flex;
+    }
+
+    .list ul {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        width: 100%;
+        padding: 0;
+    }
+
+    .list ul li {
+        width: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0;
+    }
+
+    .list ul li:last-child {
+        border-bottom: none;
+    }
+
+    .list ul a, .list ul p {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.7);
+        width: 100%;
+        display: block;
+        padding: 18px 20px;
+        text-decoration: none;
+        border-bottom: none;
+    }
+
+    .list ul a:hover,
+    .list ul p:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Dropdown in mobile */
+    .dropdown {
+        width: 100%;
+    }
+
+    .dropdown p {
+        width: 100%;
+        padding: 18px 20px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .dropdown p:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .dropdown-content {
+        position: static;
+        min-width: unset;
+        width: 100%;
+        padding: 0;
+        box-shadow: none;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 0;
+        margin: 0;
+        display: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown-content a {
+        padding: 15px 40px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .dropdown-content a:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .dropdown-content a:last-child {
+        border-bottom: none;
+    }
+
+    .line {
+        display: none;
+    }
+
+    /* Demo button at the end */
+    .navbar .side {
+        width: 100%;
+        justify-content: center;
+        padding: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        display: none;
+    }
+
+    .navbar .side.active {
+        display: flex;
+    }
+
+    .demoAnchor {
+        width: 100%;
+    }
+
+    .navbar .side button {
+        width: 100%;
+        padding: 15px 24px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0;
+    }
+
+    .navbar-header {
+        padding: 12px 15px;
+    }
+
+    .navbar .logo a {
+        font-size: 16px;
+    }
+
+    .list ul a, .list ul p {
+        padding: 15px;
+        font-size: 1rem;
+    }
+
+    .dropdown-content a {
+        padding: 12px 30px;
+    }
+
+    .navbar .side {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 980px) {
+/* Footer adjustments */
+    footer {
+        height: auto;
+        padding: 20px 0;
+    }
+
+    .ftr-cont {
+        width: 95%;
+        height: auto;
+        padding: 15px 0;
+    }
+
+    .footer-up {
+        flex-direction: column;
+        height: auto;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .up-elem {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .ftr-lft {
+        align-items: center;
+    }
+
+    .ftr-lft-logo img {
+        margin-bottom: 15px;
+    }
+
+    .lft-links {
+        width: 80%;
+        justify-content: space-around;
+    }
+
+    .ftr-rt {
+        flex-direction: column;
+        height: auto;
+        gap: 15px;
+    }
+
+    .ftr-rt-links {
+        height: auto;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .footer-down {
+        height: auto;
+        width: 90%;
+        border-top: 1px solid #b3b1b1;
+        padding-top: 15px;
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    .term-policy {
+        margin-bottom: 5px;
+    }
+}
+

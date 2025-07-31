@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/demo-page.css')}}">
+{% endblock %}
+
+{% block title %}Forti-Fund{% endblock %}
+
+{% block content %}
+    <section class="book-appointment">
+        <div class="demo-container">
+            <div class="logo">Forti-Fund</div>
+            <h1>Get a Demo of Forti-Fund AI Agents</h1>
+            <p class="description">
+                Forti-Fund generative-AI agents will help you automate financial document analysis, saving time 
+                and enhancing your team's efficiency—all on one powerful, easy-to-use platform.
+            </p>
+            <div class="flash-messages">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <form method="POST" action="{{ url_for('book_demo') }}">
+                <div class="form-group">
+                    <label for="firm-name">Name of Firm</label>
+                    <input type="text" id="firm-name" name="firm_name" placeholder="Enter your firm's name" required>
+                </div>
+                <div class="form-group">
+                    <label for="company-type">Company type</label>
+                    <select id="company-type" name="company_type" required>
+                        <option value="" disabled selected>Select company type</option>
+                        <option value="bank">Bank</option>
+                        <option value="investment">Investment Firm</option>
+                        <option value="insurance">Insurance Company</option>
+                        <option value="accounting">Accounting Firm</option>
+                        <option value="fintech">Fintech Startup</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="person-name">Name of person</label>
+                    <input type="text" id="person-name" name="person_name" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" placeholder="Your job title" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Contact email</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="team-size">Size of team</label>
+                    <select id="team-size" name="team_size" required>
+                        <option value="" disabled selected>Select team size</option>
+                        <option value="1-10">1-10</option>
+                        <option value="11-50">11-50</option>
+                        <option value="51-100">51-100</option>
+                        <option value="101-500">101-500</option>
+                        <option value="500+">500+</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="meeting-date">Select a Day</label>
+                    <input type="text" id="meeting-date" name="meeting_date" placeholder="Click a date on calendar" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="meeting-time">Select a Time</label>
+                    <select id="meeting-time" name="meeting_time" required>
+                        <option value="" disabled selected>Select a time</option>
+                        <option value="08:00">8:00 AM</option>
+                        <option value="09:00">9:00 AM</option>
+                        <option value="10:00">10:00 AM</option>
+                        <option value="11:00">11:00 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="13:00">1:00 PM</option>
+                        <option value="14:00">2:00 PM</option>
+                    </select>
+                </div>
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <div class="month-navigation">
+                            <button id="prev-month" type="button">&lt;</button>
+                            <div class="month-year" id="current-month"></div>
+                            <button id="next-month" type="button">&gt;</button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid"></div>
+                </div>
+                <button class="next-btn" type="submit">Book Demo</button>
+            </form>
+        </div>
+    </section>
+    
+    <section class="calender-section">
+        <h1>Forti-Fund</h1>
+        
+        <h2>Forti-Fund Meeting</h2>
+        
+        <div class="meeting-info">
+            <div class="checkbox-item">
+                <input type="checkbox" id="duration" checked>
+                <label for="duration">30 min</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="web-conferencing" checked>
+                <label for="web-conferencing">Web conferencing details provided upon confirmation.</label>
+            </div>
+        </div>
+        
+        <p>Schedule a meeting with Forti-Fund.</p>
+        
+        <div class="divider"></div>
+        
+        <h3>Select a Day</h3>
+        
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <div class="month-navigation">
+                    <button id="prev-month">&lt;</button>
+                    <div class="month-year" id="current-month">June 2025</div>
+                    <button id="next-month">&gt;</button>
+                </div>
+            </div>
+            
+            <div class="calendar-grid" id="calendar-grid">
+                </div>
+            
+            <div class="time-zone-selector">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="time-zone" checked>
+                    <label for="time-zone">Eastern Time - US & Canada (1t:55am) ▼</label>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{# Place page-specific JavaScript within the scripts_extra block #}
+{% block scripts_extra %}
+    <script src="{{ url_for('static', filename='js/demo_page.js')}}"></script>
+{% endblock %}

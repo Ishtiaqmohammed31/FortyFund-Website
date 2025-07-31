@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FortiFund{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;0,400;0,700;0,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playwrite+IN&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/base.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/blog.css')}}">
+    <style>
+        body {
+            background-color: rgba(255, 255, 255, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+   <div class="navbar">
+        <div class="navbar-header">
+            <div class="logo">
+                <a href="{{url_for('index')}}">
+                    <img src="{{url_for('static', filename='assets/images/navlogo.png')}}">
+                </a>
+            </div>
+        </div>
+        
+        <div class="list">
+            <ul>
+                <li>
+                    <div class="dropdown">
+                        <p id="dropBtn">{{navAnchor1}} &#x25BE;</p>
+                        <div class="dropdown-content">
+                            <a href="{{url_for('matchmaking')}}">{{dropdown1}}</a>
+                            <div class="line"></div>
+                            <a href="{{url_for('upcommingSolutions')}}">{{dropdown2}}</a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="{{url_for('faqs')}}">{{navAnchor2}}</a></li>
+                <li><a href="#" id="Contact">{{navAnchor3}}</a></li>
+            </ul>
+        </div>
+        
+        <div class="side">
+            <a href="{{url_for('demo')}}">
+                <button id="BookDemo" class="talk-to-expert">{{navbtn}}</button>
+            </a>
+        </div>
+    </div>
+
+    <main class="flex-grow w-full flex flex-col items-center justify-center">
+        {% block content %}{% endblock %}
+    </main>
+
+    <div class="blogSection">
+        <div class="blog-written">
+            <div class="blogHead">
+                <div class="blog-heading">
+                    <h1><b style='color:color: rgb(240, 40, 184);'>{{ heading }}</b></h1> {# From Blogs.heading #}
+                </div>
+                <div class="blog-description">
+                    {{ subheading }} {# From Blogs.subheading #}
+                </div>
+                <div class="auth-date">
+                    <div class="author">
+                        <i>{{ author }}</i> {# From Blogs.author #}
+                    </div>
+                    <div class="date">
+                        <i>{{ publish_date }}</i> {# From Blogs.publish_date #}
+                    </div>
+                </div>
+            </div>
+            <div class="blog-para">
+                {{ content | safe }} {# From Blogs.content. Use 'safe' if content is HTML and you trust it #}
+            </div>
+        </div>
+
+        <div class="blog-image">
+            {# The image is linked via thumbnail_image_id in Blogs table.
+               You'll need to fetch the image_filename from the Images table in your Flask route. #}
+            {% if thumbnail_image_filename %}
+                <img src="{{ url_for('static', filename='assets/uploads/' + thumbnail_image_filename) }}" alt="{{ thumbnail_image_alt_text }}">
+            {% else %}
+                {# Fallback if no image is available #}
+                <img src="{{ url_for('static', filename='assets/images/default_blog_image.jpg') }}" alt="Default Blog Image">
+            {% endif %}
+        </div>
+    </div>
+<section class="Contact">
+        <div class="Contact-conatiner">
+            <div class="closeBtnCont contactCont">
+                <button class="closeBtn" id="closeBtn">&times;</button>
+            </div>
+            <div class="headers contactCont">
+                <div class="mainHeading">
+                    <b><h1>Get Started Today</h1></b>
+                </div>
+                <div class="contact-description">
+                    Book a consultant now to see how fortifund can help you reduce your risk
+                </div>
+            </div>
+            <form action="{{ url_for('submit_contact') }}" method="POST" class="contactCont">
+                <div class="infoSection sec-cont">
+                    <div class="names form-sub-cont">
+                        <div class="form-final-cont">
+                            <label for="firstName">First Name: </label>
+                            <input type="text" id="firstName" name="first_name" required>
+                        </div>
+                        <div class="lname form-final-cont">
+                            <label for="lastName">Last Name: </label>
+                            <input type="text" id="lastName" name="last_name" required>
+                        </div>
+                    </div>
+                    <div class="job form-sub-cont">
+                        <div class="jobTitle form-final-cont">
+                            <label for="jobTitle">Job Title: </label>
+                            <input type="text" id="jobTitle" name="job_title" required>
+                        </div>
+                        <div class="CompanyName form-final-cont">
+                            <label for="companyName">Company Name</label>
+                            <input type="text" id="companyName" name="company_name" required>
+                        </div>
+                    </div>
+                    <div class="ContactInfo form-sub-cont">
+                        <div class="phNum form-final-cont">
+                            <label for="phoneNumber">Phone number: </label>
+                            <input type="text" id="phoneNumber" name="phone_number" required>
+                        </div>
+                        <div class="Email form-final-cont">
+                            <label for="email">Email: </label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="industryInfo form-sub-cont">
+                        <div class="industry form-final-cont">
+                            <label for="industry">Select Industry: </label>
+                            <select name="industry" id="industry">
+                                <option value="pleaseSelect">Please Select</option>
+                                <option value="Automotive">Automotive </option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Agriculture">Agriculture</option>
+                                <option value="Aviation">Aviation</option>
+                                <option value="Construction">Construction</option>
+                            </select>
+                        </div>
+                        <div class="EmployeeNum form-final-cont">
+                            <label for="numEmployees">Number of employees: </label>
+                            <input type="text" id="numEmployees" name="num_employees" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="additionalDetails">
+                    <label for="additionalDetails">Additional details: </label>
+                    <textarea name="additional_details" id="additionalDetails"></textarea>
+                </div>
+                <button class="Submit">Submit</button>
+            </form>
+        </div>
+    </section>
+
+    <section class='backtotop'>
+        <button id='Totop'>
+            &#8593; Top
+        </button>
+    </section>
+
+    <footer>
+        <div class="ftr-cont">
+            <div class="footer-up ftr-elem">
+                <div class="ftr-lft up-elem">
+                    <div class="ftr-lft-logo">
+                        {# footer_logo is directly available #}
+                        {% if footer_logo %}
+                            <img src="{{url_for('static', filename='assets/images/footerLogo.png')}}" alt="Fortifund Logo">
+                            
+                        {% else %}
+                             <a href="{{url_for('index')}}">FORTIFUND</a>
+                        {% endif %}
+                    </div>
+                    <div class="lft-links">
+                        
+                            <a href="{{ footer_social_link1 }}" class="ftr-links">
+                                <!-- <img src="{{ footer_social_icon1 }}" alt="Fortifund Logo"> -->
+                                <img src="{{url_for('static', filename='assets/images/fbimg.png')}}" alt="Fortifund Logo">
+                            </a>
+                        
+                        
+                            <a href="{{ footer_social_link2 }}" class="ftr-links">
+                                <!-- <img src="{{footer_social_icon2  }}" alt="Fortifund Logo"> -->
+                                 <img src="{{url_for('static', filename='assets/images/image.png')}}" alt="Fortifund Logo">
+                            </a>
+                       
+                            <a href="{{ footer_social_link3 }}" class="ftr-links">
+                                <!-- <img src="{{footer_social_icon3  }}" alt="Fortifund Logo"> -->
+                                 <img src="{{url_for('static', filename='assets/images/insta.png')}}" alt="Fortifund Logo">
+                            </a>
+                        
+                        
+                            <a href="{{ footer_social_link4 }}" class="ftr-links">
+                                <!-- <img src="{{footer_social_icon4  }}" alt="Fortifund Logo"> -->
+                                 <img src="{{url_for('static', filename='assets/images/twitter.png')}}" alt="Fortifund Logo">
+                            </a>
+                        
+                    </div>
+                </div>
+                <div class="ftr-rt up-elem">
+                    <div class="ftr-rt-links link-cont-1">
+                        <a href="{{url_for('matchmaking')}}">{{ dropdown1 }}</a>
+                        <a href="{{url_for('upcommingSolutions')}}">{{ dropdown2 }}</a>
+                        <a href="url_for('faqs')">{{ navAnchor2 }}</a>
+                    </div>
+                    <div class="ftr-rt-links link-cont-2">
+                        <a href="{{ url_for('demo') }}">{{ navbtn }}</a>
+                        <a id='contactPage'>{{ navAnchor3 }}</a>
+                        <a href="#">Solutions</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-down ftr-elem">
+                <div class="term-policy term1">
+                    <p class="term-sent">
+                        &copy; 2025 FortiFund. All rights reserved.
+                    </p>
+                </div>
+                <div class="term-policy term1">
+                    <p class="term-sent">
+                        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Sitemap</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/navbarScroll.js')}}"></script>
+    <script src="https://kit.fontawesome.com/YOUR-KIT-ID.js" crossorigin="anonymous"></script>
+    {% block scripts_extra %}
+    {% endblock %}
+</body>
+</html>

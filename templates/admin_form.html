@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - {{ 'Create' if form_type == 'create' else 'Edit' }} Blog Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f7f6; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input[type="text"], input[type="date"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+        textarea { min-height: 150px; resize: vertical; }
+        input[type="file"] { margin-top: 5px; }
+        .current-file { margin-top: 10px; font-size: 0.9em; color: #666; }
+        .current-file img { max-width: 150px; height: auto; display: block; margin-top: 10px; border: 1px solid #eee; border-radius: 4px; }
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .submit-btn:hover { background-color: #0056b3; }
+        .flash-messages { margin-bottom: 20px; text-align: center; }
+        .flash-messages .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 10px; border-radius: 5px; }
+        .flash-messages .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ 'Create New Blog Post' if form_type == 'create' else 'Edit Blog Post' }}</h1>
+
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <form action="{{ url_for('submit_blog') if form_type == 'create' else url_for('update_blog', blog_id=blog.blog_id) }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="blogHeading">Blog Heading:</label>
+                <input type="text" id="blogHeading" name="blogHeading" value="{{ blog.heading if blog else '' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="blogSubheading">Blog Subheading:</label>
+                <input type="text" id="blogSubheading" name="blogSubheading" value="{{ blog.subheading if blog else '' }}">
+            </div>
+            <div class="form-group">
+                <label for="blogAuthor">Author:</label>
+                <input type="text" id="blogAuthor" name="blogAuthor" value="{{ blog.author if blog else '' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="blogDate">Publish Date:</label>
+                <input type="date" id="blogDate" name="blogDate" value="{{ blog.publish_date if blog else currentDate }}" required>
+            </div>
+            <div class="form-group">
+                <label for="blogContent">Content:</label>
+                <textarea id="blogContent" name="blogContent" required>{{ blog.content if blog else '' }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="blogImageUpload">Thumbnail Image:</label>
+                <input type="file" id="blogImageUpload" name="blogImageUpload" accept="image/*">
+                {% if blog and blog.image_filename %}
+                    <p class="current-file">Current Image: <a href="{{ url_for('static', filename='assets/uploads/' + blog.image_filename) }}" target="_blank">{{ blog.image_filename }}</a></p>
+                    <img src="{{ url_for('static', filename='assets/uploads/' + blog.image_filename) }}" alt="Current Blog Thumbnail">
+                    <input type="hidden" name="currentThumbnailId" value="{{ blog.thumbnail_image_id }}">
+                    <input type="hidden" name="currentImageFilename" value="{{ blog.image_filename }}"> {# Keep for reference, though not strictly used in current logic #}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="imageAltText">Image Alt Text (for accessibility):</label>
+                <input type="text" id="imageAltText" name="imageAltText" value="{{ blog.alt_text if blog else '' }}">
+            </div>
+            <button type="submit" class="submit-btn">{{ 'Create Blog Post' if form_type == 'create' else 'Update Blog Post' }}</button>
+        </form>
+    </div>
+</body>
+</html>

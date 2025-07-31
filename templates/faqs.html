@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block head_extra %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/faqs.css')}}">
+{% endblock %}
+
+{% block title %}Forti-Fund{% endblock %}
+
+{% block content %}
+
+    <div class="faq-container">
+        <h1>FortiFund Frequently Asked Questions</h1>
+
+        {% if faqs_by_category %}
+            {% for category, faqs in faqs_by_category.items() %}
+                <h2>{{ category }}</h2>
+                {% for faq in faqs %}
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">{{ loop.index }}. {{ faq.question }}</div>
+                        <div class="faq-answer">
+                            {{ faq.answer | safe }} {# Use safe filter if answer contains HTML like lists #}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% else %}
+            <p>No FAQs available at the moment. Please check back later!</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function toggleAnswer(element) {
+            const answer = element.nextElementSibling;
+            element.classList.toggle('active');
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+            } else {
+                answer.style.display = 'block';
+            }
+        }
+    </script>
+{%endblock%}

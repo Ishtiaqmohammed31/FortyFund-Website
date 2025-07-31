@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{# Place page-specific CSS within the head_extra block #}
+{% block head_extra %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;0,400;0,700;0,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playwrite+IN&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Forti-Fund{% endblock %}
+
+{% block content %}
+
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-Img">
+                {# heroImg is directly available #}
+                {% if heroImg %}
+                    <img src="{{heroImg}}" alt="Hero Image">
+                {% endif %}
+            </div>
+            <div class="hero-description">
+                <span>
+                    <span class="hero-main-description"><i><h1>{{ heroHeading }}</h1></i></span>
+                </span>
+                <span class="hero-sub-description">{{ heroDescription }}</span>
+            </div>
+        </div>
+    </section>
+
+<section class="clientTrust">
+    <div class="clientTrust-description">
+        <div class="clientTrust-heading">
+            <b><h1>{{ clientHeading }}</h1></b>
+        </div>
+        <div class="clientTrust-sub-description">
+            {{ clientDescription }}
+        </div>
+    </div>
+    <div class="client-image-scroller">
+        <div class="scroller-inner">
+            {# Direct access for clientImg1, clientImg2, etc. #}
+            {% if clientImg1 %}<img src="{{clientImg1 }}" alt="Client Logo 1">{% endif %}
+            {% if clientImg2 %}<img src="{{clientImg2 }}" alt="Client Logo 2">{% endif %}
+            {% if clientImg3 %}<img src="{{clientImg3 }}" alt="Client Logo 3">{% endif %}
+            {% if clientImg4 %}<img src="{{clientImg4 }}" alt="Client Logo 4">{% endif %}
+            {% if clientImg5 %}<img src="{{clientImg5 }}" alt="Client Logo 5">{% endif %}
+            {% if clientImg6 %}<img src="{{clientImg6 }}" alt="Client Logo 6">{% endif %}
+            {% if clientImg7 %}<img src="{{clientImg7 }}" alt="Client Logo 7">{% endif %}
+            {% if clientImg8 %}<img src="{{clientImg8 }}" alt="Client Logo 8">{% endif %}
+            {% if clientImg9 %}<img src="{{clientImg9 }}" alt="Client Logo 9">{% endif %}
+
+            {# Duplicate for continuous scroll effect if needed by CSS/JS #}
+            {% if clientImg1 %}<img src="{{clientImg1 }}" alt="Client Logo 1">{% endif %}
+            {% if clientImg2 %}<img src="{{clientImg2 }}" alt="Client Logo 2">{% endif %}
+            {% if clientImg3 %}<img src="{{clientImg3 }}" alt="Client Logo 3">{% endif %}
+            {% if clientImg4 %}<img src="{{clientImg4 }}" alt="Client Logo 4">{% endif %}
+            {% if clientImg5 %}<img src="{{clientImg5 }}" alt="Client Logo 5">{% endif %}
+            {% if clientImg6 %}<img src="{{clientImg6 }}" alt="Client Logo 6">{% endif %}
+            {% if clientImg7 %}<img src="{{clientImg7 }}" alt="Client Logo 7">{% endif %}
+            {% if clientImg8 %}<img src="{{clientImg8 }}" alt="Client Logo 8">{% endif %}
+            {% if clientImg9 %}<img src="{{clientImg9 }}" alt="Client Logo 9">{% endif %}
+        </div>
+    </div>
+</section>
+
+    <section class="innovation">
+        <div class="innovation-description">
+            <h5>{{ innovationHeadTop }}</h5>
+            <h2>{{ innovationHeadmain }}</h2>
+            <p class="para" style="color:'black';">{{ innovationDescription }}</p>
+            <ul>
+                {# Direct access for li1, li2, etc. #}
+                {% if li1 %}<li>{{ li1 }}</li>{% endif %}
+                {% if li2 %}<li>{{ li2 }}</li>{% endif %}
+                {% if li3 %}<li>{{ li3 }}</li>{% endif %}
+                {% if li4 %}<li>{{ li4 }}</li>{% endif %}
+            </ul>
+        </div>
+        <div class="innovation-video">
+            <video autoplay muted loop>
+                <source src="{{innovationVideo }}" type="video/mp4" >
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </section>
+
+    <section class="improve-experience">
+        <video autoplay muted loop id="myVideo">
+            <source src="{{clientExpVideo }}" type="video/mp4">
+        </video>
+        <div class="improve-experience-description">
+            <div class="improve-experience-heading">
+                <b><h1>{{ clientExpHead }}</h1></b>
+            </div>
+            <div class="improve-experience-subheading">
+                {{ clientExpDescription }}
+            </div>
+        </div>
+    </section>
+
+    <section class="statistics">
+        <div class="cont">
+            <div class="statistics-description">
+                <div class="statistics-heading">
+                    <h1><b>{{ statHead }}</b></h1>
+                </div>
+                <div class="statistics-sub-description">
+                    {{ statDescription }}
+                </div>
+            </div>
+            <div class="statistics-cards">
+                {# Direct access for stat card elements #}
+                <div class="card c1">
+                    {% if StatcardLogo1 %}
+                        <img src="{{StatcardLogo1 }}" alt="Statistic Card Logo 1">
+                    {% endif %}
+                    <div class="number">
+                        <h1>{{ StatcardHead1 }}</h1>
+                        <p>{{ StatcardPara1 }}</p>
+                    </div>
+                </div>
+                <div class="card c2">
+                    {% if StatcardLogo2 %}
+                        <img src="{{StatcardLogo2 }}" alt="Statistic Card Logo 2">
+                    {% endif %}
+                    <div class="number">
+                        <h1>{{ StatcardHead2 }}</h1>
+                        <p>{{ StatcardPara2 }}</p>
+                    </div>
+                </div>
+                <div class="card c3">
+                    {% if StatcardLogo3 %}
+                        <img src="{{StatcardLogo3 }}" alt="Statistic Card Logo 3">
+                    {% endif %}
+                    <div class="number">
+                        <h1>{{ StatcardHead3 }}</h1>
+                        <p>{{ StatcardPara3 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="get-to-know">
+        <video autoplay muted loop id="myVideo">
+            <source src="{{knowVideo}}" type="video/mp4">
+        </video>
+        <div class="get-to-know-heading">
+            <h1><b>{{ knowHead }}</b></h1>
+        </div>
+    </section>
+
+    <section class="explore">
+        <div class="explore-head">
+            <div class="explore-heading"><b><h1>
+                {{ exploreHeading }} 
+            </h1></b></div>
+            <div class="explore-btns">
+                <div class="btn1 exp-btn scroll-btn left-btn">
+                    <p><</p>
+                </div>
+                <div class="btn-2 exp-btn scroll-btn right-btn">
+                    <p>></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="explore-pics-frame scroll-content">
+            {# This part still relies on the 'Blogs' table and images linked via 'Images' table.
+               `latest_blogs` is passed as a list of dictionaries/objects, so we can iterate it. #}
+            {% for blog in latest_blogs %}
+                <div>
+                    <a href='{{ url_for('blog', blog_id=blog.blog_id) }}'> {# CHANGED HERE: blognum to blog_id #}
+                        {% if blog.thumbnail_image_filename %}
+                            <img src="{{ url_for('static', filename='assets/uploads/' + blog.thumbnail_image_filename) }}" alt="{{ blog.thumbnail_image_alt_text }}">
+                        {% endif %}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="explore-btn-section">
+        </div>
+    </section>
+
+{%endblock%}
